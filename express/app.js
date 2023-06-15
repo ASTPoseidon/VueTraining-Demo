@@ -59,9 +59,6 @@ var books = [
         Price: "test",
         ISBN: "test"
     },
-    {
-
-    }
 ]
 
 // 接口  叫做 /list   返回数据 [1,2,3,4,5]
