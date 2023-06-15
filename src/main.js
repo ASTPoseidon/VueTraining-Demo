@@ -15,7 +15,7 @@ var router = new VueRouter({
         {
             path: '/LogIn',
             meta: {needau: false},
-            component:()=>import('./page/LogIn.vue')
+            component:()=>import('./page/LoginView.vue')
         }
     ]
 })

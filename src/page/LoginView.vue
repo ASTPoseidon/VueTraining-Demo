@@ -1,12 +1,12 @@
 <template>
   <div class="text-center">
-    <form class="form-login" @submit.prevent="login" method="post">
+    <form class="form-login" @submit.prevent="login" method="get">
       <img class="mb-4" src="../assets/LogIn.png" alt="" width="72" height="72">
       <h1 class="h3 mb-3 font-weight-normal">请登录</h1>
       <label for="UserName" class="sr-only">UserName</label>
       <input v-model="userName" type="text" id="UserName" name="UserName" class="form-control" placeholder="用户名：默认为admin" required autofocus>
       <label for="PassWord" class="sr-only">PassWord</label>
-      <input v-model="password" type="password" id="Password" name="PassWord" class="form-control" placeholder="密码：默认为admin" required>
+      <input v-model="passWord" type="password" id="Password" name="PassWord" class="form-control" placeholder="密码：默认为admin" required>
       <div class="checkbox mb-3">
         <label>
           <input type="checkbox" name="checkbox" v-model="rememberMe"> 记住我
@@ -25,22 +25,28 @@ export default {
   data() {
     return {
       userName: '',
-      password: '',
+      passWord: '',
       rememberMe: false
     };
   },
   methods: {
     login() {
-      axios.post('/api/LogIn', {
-        userName: this.userName,
-        password: this.password
+      axios.get('/api/LogIn', {
+        params: {
+          userName: this.userName,
+          passWord: this.passWord
+        }
       })
       .then(response => {
         // Handle successful login
         if(response.data.code === 200 && response.data.status===1){
           console.log('登陆成功')
+          console.log(response)
+          this.$router.push('/Main')
         }else{
           console.log('登陆失败')
+          console.log(response)
+          alert("登陆失败！")
         }
       })
       .catch(error => {

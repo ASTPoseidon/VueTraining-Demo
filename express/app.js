@@ -58,20 +58,26 @@ app.get('/list', (req, res) => {
     })
 })
 
-app.post('/LogIn',(req,res)=>{
-    const{userName,passWord}=req.body
-    if(userName==='admin'&&passWord==='admin'){
+app.get('/LogIn', (req, res) => {
+    const { userName, passWord } = req.query;
+
+    if (userName === 'admin' && passWord === 'admin') {
         res.json({
             code: 200,
-            status: 1
-        })
-    }else{
+            status: 1,
+            userName: userName,
+            passWord: passWord
+        });
+    } else {
         res.json({
             code: 401,
-            status: 2
-        })
+            status: 2,
+            userName: userName,
+            passWord: passWord
+        });
     }
-})
+});
+
 
 
 // catch 404 and forward to error handler
