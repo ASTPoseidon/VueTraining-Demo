@@ -22,13 +22,24 @@
 
 <script>
 import axios from "axios";
+import Cookies from 'js-cookie';
 
 export default {
+  created() {
+    // If the cookies exist, fill in the form with the saved username and password
+    const savedUserName = Cookies.get('username');
+    const savedPassWord = Cookies.get('password');
+    if (savedUserName && savedPassWord) {
+      this.userName = savedUserName;
+      this.passWord = savedPassWord;
+      this.rememberMe = true;
+    }
+  },
   data() {
     return {
       userName: '',
       passWord: '',
-      rememberMe: false
+      rememberMe: false,
     };
   },
   methods: {
@@ -38,26 +49,26 @@ export default {
           userName: this.userName,
           passWord: this.passWord
         }
-      })
-          .then(response => {
-            // Handle successful login
-            if (response.data.code === 200 && response.data.status === 1) {
-              console.log('登陆成功')
-              console.log(response)
-              this.$router.push('/MainView')
-            } else {
-              console.log('登陆失败')
-              console.log(response)
-              alert("登陆失败！")
-            }
-          })
-          .catch(error => {
-            // Handle login error
-            console.error('登录请求出错', error)
-          });
+      }).then(response => {
+        // Handle successful login
+        if (response.data.code === 200 && response.data.status === 1) {
+          if (this.rememberMe) {
+            Cookies.set('username', this.userName, {expires: 1}); // 设置用户名 cookie，有效期为 1 天
+            Cookies.set('password', this.passWord, {expires: 1}); // 设置密码 cookie，有效期为 1 天
+          }
+          sessionStorage.setItem('status', "1"); // 使用 sessionStorage 保存用户信息
+          this.$router.push('/MainView')
+        } else {
+          alert("登陆失败！")
+        }
+      }).catch(error => {
+        // Handle login error
+        console.error('登录请求出错', error)
+      });
     }
   }
 };
+
 </script>
 
 <style scoped>

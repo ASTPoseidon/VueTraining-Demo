@@ -82,6 +82,18 @@ export default {
       this.books = data.data.data
     })
   },
+  beforeRouteEnter(to, from, next) {
+    if (to.meta.Au) {
+      if (sessionStorage.getItem('status') !== "1") {
+        alert("请先登录！")
+        next('/')
+      } else {
+        next()
+      }
+    } else {
+      next()
+    }
+  },
   computed: {
     isDisabled() {
       return this.Name === '' || this.Author === '' || this.Pub === '' || this.Price === '' || this.ISBN === '';
