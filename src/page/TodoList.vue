@@ -36,7 +36,7 @@
     <div>
       <!-- 搜索框 -->
       <div class="search">
-        <img src="./../assets/logo.png" width="40"/>
+        <img src="./../assets/LogIn.png" width="40"/>
         <input placeholder="请输入搜索内容"/>
         <button>
           <img src="./../assets/search.png"/>

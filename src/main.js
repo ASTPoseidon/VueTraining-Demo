@@ -11,6 +11,11 @@ var router = new VueRouter({
             path: '/TodoList',
             meta: {needau: true},
             component: () => import('./page/TodoList.vue')
+        },
+        {
+            path: '/LogIn',
+            meta: {needau: false},
+            component:()=>import('./page/LogIn.vue')
         }
     ]
 })
