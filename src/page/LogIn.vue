@@ -1,6 +1,6 @@
 <template>
   <div class="text-center">
-    <form class="form-login" @submit="login" method="post">
+    <form class="form-login" @submit.prevent="login" method="post">
       <img class="mb-4" src="../assets/LogIn.png" alt="" width="72" height="72">
       <h1 class="h3 mb-3 font-weight-normal">请登录</h1>
       <label for="UserName" class="sr-only">UserName</label>
@@ -30,19 +30,23 @@ export default {
     };
   },
   methods: {
-    login(event) {
-      event.preventDefault();
-
-      axios.post('LogIn', {
+    login() {
+      axios.post('/api/LogIn', {
         userName: this.userName,
         password: this.password
       })
-      // .then(response => {
-      //   // Handle successful login
-      // })
-      // .catch(error => {
-      //   // Handle login error
-      // });
+      .then(response => {
+        // Handle successful login
+        if(response.data.code === 200 && response.data.status===1){
+          console.log('登陆成功')
+        }else{
+          console.log('登陆失败')
+        }
+      })
+      .catch(error => {
+        // Handle login error
+        console.error('登录请求出错',error)
+      });
 
     }
   }
