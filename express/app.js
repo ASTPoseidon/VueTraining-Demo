@@ -50,11 +50,32 @@ var news = [
     }
 ]
 
+var books = [
+    {
+        id: 1,
+        Name: "test",
+        Author: "test",
+        Pub: "test",
+        Price: "test",
+        ISBN: "test"
+    },
+    {
+
+    }
+]
+
 // 接口  叫做 /list   返回数据 [1,2,3,4,5]
 app.get('/list', (req, res) => {
     res.json({
         code: 200,
         data: news
+    })
+})
+
+app.get('/BookList', (req, res) => {
+    res.json({
+        code: 200,
+        data: books
     })
 })
 

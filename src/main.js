@@ -13,9 +13,14 @@ var router = new VueRouter({
             component: () => import('./page/TodoList.vue')
         },
         {
-            path: '/LogIn',
+            path: '/LoginView',
             meta: {needau: false},
             component:()=>import('./page/LoginView.vue')
+        },
+        {
+            path: '/MainView',
+            meta: {needau: false},
+            component:()=>import('./page/MainView.vue')
         }
     ]
 })
