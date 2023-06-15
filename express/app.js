@@ -23,51 +23,64 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 
-var news = [
-    {
-        id: 1,
-        title: '女学霸边读研边兼职3年赚17万',
-        desc: '真的好厉害，一年赚6万',
-        createTime: '2023-06-15'
-    },
-    {
-        id: 2,
-        title: '杭州亚运会筹备工作进入冲刺阶段',
-        desc: '加油！！！',
-        createTime: '2023-06-14'
-    },
-    {
-        id: 3,
-        title: '司机吃零食接电话酿事故致5死',
-        desc: '永远对司机说NO！',
-        createTime: '2023-06-13'
-    },
-    {
-        id: 4,
-        title: '谢娜再去已是嘉宾',
-        desc: '不知道这是说啥',
-        createTime: '2023-06-12'
-    }
-]
-
 var books = [
     {
-        id: 1,
-        Name: "test",
-        Author: "test",
-        Pub: "test",
-        Price: "test",
-        ISBN: "test"
+        ID: 1,
+        Name: "水浒传",
+        Author: "施耐庵",
+        Pub: "人民文学出版社",
+        Price: "36",
+        ISBN: "9787020015016"
     },
+    {
+        ID: 2,
+        Name: "三国演义",
+        Author: "罗贯中",
+        Pub: "人民文学出版社",
+        Price: "46",
+        ISBN: "9787514602227"
+    },
+    {
+        ID: 3,
+        Name: "红楼梦",
+        Author: "曹雪芹",
+        Pub: "人民文学出版社",
+        Price: "50",
+        ISBN: "9787802506077"
+    },
+    {
+        ID: 4,
+        Name: "西游记",
+        Author: "吴承恩",
+        Pub: "人民文学出版社",
+        Price: "59",
+        ISBN: "9787020002207"
+    },
+    {
+        ID: 5,
+        Name: "飘",
+        Author: "玛格丽特·米切尔",
+        Pub: "中央编译出版社",
+        Price: "72",
+        ISBN: "9787550009455"
+    },
+    {
+        ID: 6,
+        Name: "巴黎圣母院",
+        Author: "维克多·雨果",
+        Pub: "晨光出版社",
+        Price: "30",
+        ISBN: "9787541495069"
+    },
+    {
+        ID: 7,
+        Name: "童年",
+        Author: "高尔基",
+        Pub: "中国画报出版社",
+        Price: "30",
+        ISBN: "9787514611533"
+    }
 ]
-
-// 接口  叫做 /list   返回数据 [1,2,3,4,5]
-app.get('/list', (req, res) => {
-    res.json({
-        code: 200,
-        data: news
-    })
-})
 
 app.get('/BookList', (req, res) => {
     res.json({
@@ -77,7 +90,7 @@ app.get('/BookList', (req, res) => {
 })
 
 app.get('/LogIn', (req, res) => {
-    const { userName, passWord } = req.query;
+    const {userName, passWord} = req.query;
 
     if (userName === 'admin' && passWord === 'admin') {
         res.json({
@@ -95,7 +108,6 @@ app.get('/LogIn', (req, res) => {
         });
     }
 });
-
 
 
 // catch 404 and forward to error handler

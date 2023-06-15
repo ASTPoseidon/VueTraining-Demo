@@ -8,19 +8,14 @@ Vue.use(VueRouter)
 var router = new VueRouter({
     routes: [
         {
-            path: '/TodoList',
-            meta: {needau: true},
-            component: () => import('./page/TodoList.vue')
-        },
-        {
-            path: '/LoginView',
-            meta: {needau: false},
-            component:()=>import('./page/LoginView.vue')
+            path: '/',
+            meta: {Au: false},
+            component: () => import('./page/LoginView.vue')
         },
         {
             path: '/MainView',
-            meta: {needau: false},
-            component:()=>import('./page/MainView.vue')
+            meta: {Au: true},
+            component: () => import('./page/MainView.vue')
         }
     ]
 })

@@ -2,21 +2,30 @@
   <div>
     <div class="alert alert-primary" role="alert">
       图书管理系统
+      <div style="top: 5px;left: 90%;position: absolute">
+        <button class="btn btn-outline-primary" @click="backLogin()">返回登陆界面</button>
+      </div>
     </div>
     <div class="container input-group input-group-lg">
       <spam style="margin-top: 12px">添加：</spam>
-      <input v-model="Name" type="text" class="form-control" aria-label="Sizing example input"
-             aria-describedby="inputGroup-sizing-lg">
-      <input v-model="Author" type="text" class="form-control" aria-label="Sizing example input"
-             aria-describedby="inputGroup-sizing-lg">
-      <input v-model="Pub" type="text" class="form-control" aria-label="Sizing example input"
-             aria-describedby="inputGroup-sizing-lg">
-      <input v-model="Price" type="text" class="form-control" aria-label="Sizing example input"
-             aria-describedby="inputGroup-sizing-lg">
-      <input v-model="ISBN" type="text" class="form-control" aria-label="Sizing example input"
-             aria-describedby="inputGroup-sizing-lg">
-      <button type="button" class="btn btn-outline-dark" @click="add()">确定</button>
-      <button type="button" class="btn btn-outline-danger" @click="reset()">清空</button>
+      <input v-model="Name" aria-describedby="inputGroup-sizing-lg" aria-label="Sizing example input"
+             class="form-control"
+             type="text">
+      <input v-model="Author" aria-describedby="inputGroup-sizing-lg" aria-label="Sizing example input"
+             class="form-control"
+             type="text">
+      <input v-model="Pub" aria-describedby="inputGroup-sizing-lg" aria-label="Sizing example input"
+             class="form-control"
+             type="text">
+      <input v-model="Price" aria-describedby="inputGroup-sizing-lg" aria-label="Sizing example input"
+             class="form-control"
+             type="text">
+      <input v-model="ISBN" aria-describedby="inputGroup-sizing-lg" aria-label="Sizing example input"
+             class="form-control"
+             type="text">
+      <button :disabled="isDisabled" class="btn btn-outline-primary" type="button" @click="add()">确定</button>
+      <button class="btn btn-outline-secondary" type="button" @click="reset()">清空</button>
+      <button class="btn btn-outline-danger" style="margin-left: 50px" type="button" @click="del()">删除</button>
     </div>
     <!-- 图书列表 -->
     <div style="display: flex;justify-content: center;align-items: center">
@@ -36,13 +45,13 @@
             </thead>
             <tbody>
             <template>
-              <tr v-for="book in books" :key="book.id">
-                <td><input type="checkbox" name="checkbox" :value="book.id"></td>
-                <td :id="`${book.id}_Name`">{{ book.Name }}</td>
-                <td :id="`${book.id}_Author`">{{ book.Author }}</td>
-                <td :id="`${book.id}_Publisher`">{{ book.Pub }}</td>
-                <td :id="`${book.id}_Price`">{{ book.Price }}</td>
-                <td :id="`${book.id}_ISBN`">{{ book.ISBN }}</td>
+              <tr v-for="book in books" :key="book.ID">
+                <td><input v-model="selectedList" :value="book.ID" name="checkbox" type="checkbox"></td>
+                <td :id="`${book.ID}_Name`">{{ book.Name }}</td>
+                <td :id="`${book.ID}_Author`">{{ book.Author }}</td>
+                <td :id="`${book.ID}_Publisher`">{{ book.Pub }}</td>
+                <td :id="`${book.ID}_Price`">{{ book.Price }}</td>
+                <td :id="`${book.ID}_ISBN`">{{ book.ISBN }}</td>
               </tr>
             </template>
             </tbody>
@@ -57,24 +66,6 @@
 import axios from "axios";
 
 export default {
-  created() {
-    axios.get('api/BookList').then((data) => {
-      this.books = data.data.data
-      console.log(data)
-    })
-  },
-  head() {
-    return {
-      script: [
-        {
-          src: 'https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js'
-        },
-        {
-          src: 'https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js'
-        }
-      ]
-    }
-  },
   data() {
     return {
       Name: '',
@@ -82,24 +73,34 @@ export default {
       Pub: '',
       Price: '',
       ISBN: '',
-      selectedType: '',
-      searchText: '',
-      flag: 0,
-      bookResult: [],
       books: [],
-      selectedBooks: [],
-      // ... other data properties
+      selectedList: [],
     };
   },
+  created() {
+    axios.get('api/BookList').then((data) => {
+      this.books = data.data.data
+    })
+  },
+  computed: {
+    isDisabled() {
+      return this.Name === '' || this.Author === '' || this.Pub === '' || this.Price === '' || this.ISBN === '';
+    },
+  },
   methods: {
+    backLogin() {
+      this.$router.push('/');
+    },
     add() {
       this.books.push({
+        ID: this.books.length + 1,
         Name: this.Name,
         Author: this.Author,
         Pub: this.Pub,
         Price: this.Price,
         ISBN: this.ISBN
       })
+      this.reset()
     },
     reset() {
       this.Name = ''
@@ -108,12 +109,16 @@ export default {
       this.Price = ''
       this.ISBN = ''
     },
+    del() {
+      this.selectedList.forEach(i => {
+        this.books.splice(i - 1, 1)
+      })
+      this.reset()
+    }
   }
 };
 </script>
 
-<style>
-/* CSS styles */
-@import 'https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css';
+<style scoped>
 
 </style>

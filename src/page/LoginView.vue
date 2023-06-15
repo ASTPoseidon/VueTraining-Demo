@@ -1,19 +1,21 @@
 <template>
   <div class="text-center">
-    <form class="form-login" @submit.prevent="login" method="get">
-      <img class="mb-4" src="../assets/LogIn.png" alt="" width="72" height="72">
+    <form class="form-login" method="get" @submit.prevent="login">
+      <img alt="" class="mb-4" height="72" src="../assets/LogIn.png" width="72">
       <h1 class="h3 mb-3 font-weight-normal">请登录</h1>
-      <label for="UserName" class="sr-only">UserName</label>
-      <input v-model="userName" type="text" id="UserName" name="UserName" class="form-control" placeholder="用户名：默认为admin" required autofocus>
-      <label for="PassWord" class="sr-only">PassWord</label>
-      <input v-model="passWord" type="password" id="Password" name="PassWord" class="form-control" placeholder="密码：默认为admin" required>
+      <label class="sr-only" for="UserName">UserName</label>
+      <input id="UserName" v-model="userName" autofocus class="form-control" name="UserName"
+             placeholder="用户名：默认为admin" required type="text">
+      <label class="sr-only" for="PassWord">PassWord</label>
+      <input id="Password" v-model="passWord" class="form-control" name="PassWord" placeholder="密码：默认为admin"
+             required type="password">
       <div class="checkbox mb-3">
         <label>
-          <input type="checkbox" name="checkbox" v-model="rememberMe"> 记住我
+          <input v-model="rememberMe" name="checkbox" type="checkbox"> 记住我
         </label>
       </div>
       <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
-      <p class="mt-5 mb-3 text-muted">&copy; 图书管理系统</p>
+      <p class="mt-5 mb-3 text-muted">&copy; 图书管理</p>
     </form>
   </div>
 </template>
@@ -37,30 +39,28 @@ export default {
           passWord: this.passWord
         }
       })
-      .then(response => {
-        // Handle successful login
-        if(response.data.code === 200 && response.data.status===1){
-          console.log('登陆成功')
-          console.log(response)
-          this.$router.push('/Main')
-        }else{
-          console.log('登陆失败')
-          console.log(response)
-          alert("登陆失败！")
-        }
-      })
-      .catch(error => {
-        // Handle login error
-        console.error('登录请求出错',error)
-      });
-
+          .then(response => {
+            // Handle successful login
+            if (response.data.code === 200 && response.data.status === 1) {
+              console.log('登陆成功')
+              console.log(response)
+              this.$router.push('/MainView')
+            } else {
+              console.log('登陆失败')
+              console.log(response)
+              alert("登陆失败！")
+            }
+          })
+          .catch(error => {
+            // Handle login error
+            console.error('登录请求出错', error)
+          });
     }
   }
 };
 </script>
 
 <style scoped>
-@import 'https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css';
 
 html,
 body {
@@ -111,7 +111,7 @@ body {
   border-top-right-radius: 0;
 }
 
-.text-center{
+.text-center {
   padding-top: 10%;
 }
 </style>
