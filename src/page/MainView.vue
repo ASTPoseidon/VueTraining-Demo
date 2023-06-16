@@ -46,7 +46,8 @@
             <tbody>
             <template>
               <tr v-for="book in books" :key="book.ID">
-                <td><input v-model="selectedList" :value="book.ID" name="checkbox" type="checkbox"></td>
+                <td><input v-model="selectedList" :value="book.ID" name="checkbox" type="checkbox" @change="check()">
+                </td>
                 <td :id="`${book.ID}_Name`">{{ book.Name }}</td>
                 <td :id="`${book.ID}_Author`">{{ book.Author }}</td>
                 <td :id="`${book.ID}_Publisher`">{{ book.Publisher }}</td>
@@ -56,6 +57,7 @@
             </template>
             </tbody>
           </table>
+          <input v-model="all" type="checkbox" @change="selectAll()">&nbsp;全选
         </div>
       </div>
     </div>
@@ -75,6 +77,7 @@ export default {
       ISBN: '',
       books: [],
       selectedList: [],
+      all: false
     };
   },
   created() {
@@ -103,12 +106,29 @@ export default {
     backLogin() {
       this.$router.push('/');
     },
+    selectAll() {
+      if (this.all) {
+        this.books.forEach(i => {
+          this.selectedList.push(i.ID)
+        })
+      } else {
+        this.selectedList = []
+      }
+    },
+    check() {
+      if (this.selectedList.length == this.books.length) {
+        this.all = true
+      } else {
+        this.all = false
+      }
+    },
     add() {
       if (isNaN(Number(this.Price))) {
         alert("输入有误！")
         this.reset()
       } else {
-        var lastID = this.books[this.books.length - 1].ID + 1
+        // var lastID = this.books[this.books.length - 1].ID + 1
+        var lastID = this.books.length == 0 ? 0 : this.books[this.books.length - 1].ID + 1
         this.books.push({
           ID: lastID,
           Name: this.Name,

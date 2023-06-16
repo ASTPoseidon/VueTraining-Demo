@@ -1,7 +1,4 @@
-create database books;
-use books;
-
-create table bs_library.book
+create table book
 (
     ID        int auto_increment
         primary key,
