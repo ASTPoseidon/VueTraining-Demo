@@ -127,7 +127,6 @@ export default {
         alert("输入有误！")
         this.reset()
       } else {
-        // var lastID = this.books[this.books.length - 1].ID + 1
         var lastID = this.books.length == 0 ? 0 : this.books[this.books.length - 1].ID + 1
         this.books.push({
           ID: lastID,
