@@ -14,7 +14,7 @@
       <input v-model="Author" aria-describedby="inputGroup-sizing-lg" aria-label="Sizing example input"
              class="form-control"
              type="text">
-      <input v-model="Pub" aria-describedby="inputGroup-sizing-lg" aria-label="Sizing example input"
+      <input v-model="Publisher" aria-describedby="inputGroup-sizing-lg" aria-label="Sizing example input"
              class="form-control"
              type="text">
       <input v-model="Price" aria-describedby="inputGroup-sizing-lg" aria-label="Sizing example input"
@@ -49,7 +49,7 @@
                 <td><input v-model="selectedList" :value="book.ID" name="checkbox" type="checkbox"></td>
                 <td :id="`${book.ID}_Name`">{{ book.Name }}</td>
                 <td :id="`${book.ID}_Author`">{{ book.Author }}</td>
-                <td :id="`${book.ID}_Publisher`">{{ book.Pub }}</td>
+                <td :id="`${book.ID}_Publisher`">{{ book.Publisher }}</td>
                 <td :id="`${book.ID}_Price`">{{ book.Price }}</td>
                 <td :id="`${book.ID}_ISBN`">{{ book.ISBN }}</td>
               </tr>
@@ -70,7 +70,7 @@ export default {
     return {
       Name: '',
       Author: '',
-      Pub: '',
+      Publisher: '',
       Price: '',
       ISBN: '',
       books: [],
@@ -78,8 +78,8 @@ export default {
     };
   },
   created() {
-    axios.get('api/BookList').then((data) => {
-      this.books = data.data.data
+    axios.get('api/List').then((data) => {
+      this.books=data.data
     })
   },
   beforeRouteEnter(to, from, next) {
@@ -96,7 +96,7 @@ export default {
   },
   computed: {
     isDisabled() {
-      return this.Name === '' || this.Author === '' || this.Pub === '' || this.Price === '' || this.ISBN === '';
+      return this.Name === '' || this.Author === '' || this.Publisher === '' || this.Price === '' || this.ISBN === '';
     },
   },
   methods: {
@@ -108,16 +108,33 @@ export default {
         ID: this.books.length + 1,
         Name: this.Name,
         Author: this.Author,
-        Pub: this.Pub,
+        Publisher: this.Publisher,
         Price: this.Price,
         ISBN: this.ISBN
+      })
+      axios.get('api/Insert',{
+        params:{
+          ID: this.books.length + 1,
+          Name: this.Name,
+          Author: this.Author,
+          Publisher: this.Publisher,
+          Price: this.Price,
+          ISBN: this.ISBN
+        }
+      }).then(response=>{
+        if(response.data.message==='success'){
+          console.log("插入成功")
+        }else{
+          console.log("插入失败")
+          console.log(response.data.errorDetails)
+        }
       })
       this.reset()
     },
     reset() {
       this.Name = ''
       this.Author = ''
-      this.Pub = ''
+      this.Publisher = ''
       this.Price = ''
       this.ISBN = ''
     },
