@@ -26,7 +26,7 @@ import Cookies from 'js-cookie';
 
 export default {
   created() {
-    // If the cookies exist, fill in the form with the saved username and password
+    //此处请求cookie 自动填写表单
     const savedUserName = Cookies.get('username');
     const savedPassWord = Cookies.get('password');
     if (savedUserName && savedPassWord) {
