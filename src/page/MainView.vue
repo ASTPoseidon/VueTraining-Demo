@@ -10,19 +10,19 @@
       <spam style="margin-top: 12px">添加：</spam>
       <input v-model="Name" aria-describedby="inputGroup-sizing-lg" aria-label="Sizing example input"
              class="form-control"
-             type="text">
+             placeholder="书名" type="text">
       <input v-model="Author" aria-describedby="inputGroup-sizing-lg" aria-label="Sizing example input"
              class="form-control"
-             type="text">
+             placeholder="作者" type="text">
       <input v-model="Publisher" aria-describedby="inputGroup-sizing-lg" aria-label="Sizing example input"
              class="form-control"
-             type="text">
+             placeholder="出版社" type="text">
       <input v-model="Price" aria-describedby="inputGroup-sizing-lg" aria-label="Sizing example input"
              class="form-control"
-             type="text">
+             placeholder="价格" type="text">
       <input v-model="ISBN" aria-describedby="inputGroup-sizing-lg" aria-label="Sizing example input"
              class="form-control"
-             type="text">
+             placeholder="ISBN" type="text">
       <button :disabled="isDisabled" class="btn btn-outline-primary" type="button" @click="add()">确定</button>
       <button class="btn btn-outline-secondary" type="button" @click="reset()">清空</button>
       <button class="btn btn-outline-danger" style="margin-left: 50px" type="button" @click="del()">删除</button>
@@ -79,7 +79,7 @@ export default {
   },
   created() {
     axios.get('api/List').then((data) => {
-      this.books=data.data
+      this.books = data.data
     })
   },
   beforeRouteEnter(to, from, next) {
@@ -104,32 +104,36 @@ export default {
       this.$router.push('/');
     },
     add() {
-      this.books.push({
-        ID: this.books.length + 1,
-        Name: this.Name,
-        Author: this.Author,
-        Publisher: this.Publisher,
-        Price: this.Price,
-        ISBN: this.ISBN
-      })
-      axios.get('api/Insert',{
-        params:{
-          ID: this.books.length + 1,
+      if (isNaN(Number(this.Price))) {
+        alert("输入有误！")
+        this.reset()
+      } else {
+        var lastID = this.books[this.books.length - 1].ID + 1
+        this.books.push({
+          ID: lastID,
           Name: this.Name,
           Author: this.Author,
           Publisher: this.Publisher,
           Price: this.Price,
           ISBN: this.ISBN
-        }
-      }).then(response=>{
-        if(response.data.message==='success'){
-          console.log("插入成功")
-        }else{
-          console.log("插入失败")
-          console.log(response.data.errorDetails)
-        }
-      })
-      this.reset()
+        })
+        axios.get('api/Insert', {
+          params: {
+            Name: this.Name,
+            Author: this.Author,
+            Publisher: this.Publisher,
+            Price: this.Price,
+            ISBN: this.ISBN
+          }
+        }).then(response => {
+          if (response.data.message === 'success') {
+            console.log("插入成功")
+          } else {
+            console.log("插入失败")
+          }
+        })
+        this.reset()
+      }
     },
     reset() {
       this.Name = ''
@@ -140,7 +144,8 @@ export default {
     },
     del() {
       this.selectedList.forEach(i => {
-        this.books.splice(i - 1, 1)
+        this.books = this.books.filter(book => book.ID !== i);
+        axios.get(`api/Delete?ID=${i}`)
       })
       this.reset()
     }
