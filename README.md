@@ -1,5 +1,3 @@
-# test
-
 ## Project setup
 
 ```
@@ -10,6 +8,16 @@ npm install
 
 ```
 npm run serve
+```
+
+### Run Express to connect Mysql8.0
+
+```
+cd express
+```
+
+```
+npm start
 ```
 
 ### Compiles and minifies for production
